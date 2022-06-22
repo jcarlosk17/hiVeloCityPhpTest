@@ -1,15 +1,26 @@
 # Simple code challenge #
 
-This code is an example from a real world scenario that has been modified to protect the source. The code is one file from a large PHP application.
+Here I opted to make some changes based on my way of working and my current knowledge:
+1. Using the function file(), instead fopen()
+	Getting all the information at once and work with the content from an array instead of keep the file opened and read it line by line.
 
-The context of the file is a parser of a result file from a specific Singapore bank regarding bank transfers. There were multiple banks from multiple countries involved in this application.
+2. Using array_map() and str_getcsv()
+	To get each element separated by commas from each element (line from CSV) returned by file().
 
-To install the dependencies run `composer install` (this assumes you have composer installed in your environment)
+3. Using Lists and array_shift()
+	On this example is expected that first line from the CSV contains needed information for the final result, being in a different format from the remaining lines. Each element is being associated on the respective variable and the first line is removed from the main array, leaving only the records of transactions.
 
-The code works and outputs what it required. Included is one test file with one test. This can be run and should pass with `./vendor/bin/phpunit tests`
+4. Looping on the records
+	Executing on all elements remained on the array, once reading the inner element verifies if the line has at least 12 elements, since the highest we will be working with is the 12th. In case of a blank line on the CSV file or simply less than the required 12 elements, this transacation will be skipped. In case of having a blank element, will be treated as a normal line and the expected process and result.
 
-Read through the `src/FinalResult.php` as well as the test file `tests/FinalResultTest.php` and see what improvements can be made (if any). Please be prepared to explain any modifications that have been made (or not) and why. The only rule is to not change the current end result or output.
+5. Parsing only to int (subunits)
+	I saw as unecessary parsing the number as float and later parsing as int, since we will multiply it for 100 as our expected result.
 
-Keep in mind this is from a larger application that handles multiple files, multiple banks, mutiple countries, and multiple currencies.
+6. Assigning directly to the array ($rcs)
+	Instead of using an auxiliary variable ($rcd), can be assigned directly to our array $rcs.
 
-Do the best you can to demonstrate your skillset.
+7. Remove of the array_filter()
+	Since we are checking if each line has more than 12 elements (between commas) there is no risk of having a complete empty element on our array.
+
+8. Remove of the returned array element "document".
+	Since this element is not expected to be on the final result, it was removed. 
